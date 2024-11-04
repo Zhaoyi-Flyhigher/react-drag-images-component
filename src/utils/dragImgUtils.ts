@@ -27,8 +27,7 @@ export const computedLeft = (num: number, col: number, width: number) => {
  * */ 
 export const formula = (len: number, n: number) => {
   const num = len / n < 1 ? 1 : n;
-  // return (num + 1) * 10;
-  return (2 * num - 2) * 10
+  return  (num + 1) * 10 // (2 * num - 2) * 10
 }
 
 /**
@@ -37,11 +36,8 @@ export const formula = (len: number, n: number) => {
  * @param len 图片数据的长度
  * @param colNum 列数
  * */ 
-export const computedWidth = (w: number, len: number, colNum: number,  ) => {
-  if (colNum > 1) {
-    return w * colNum + formula(len, colNum)  + 'px' //+ baseParams.current.paAndMa
-  }
-  return w * colNum + formula(len, colNum) + 'px'
+export const computedWidth = (w: number, len: number, colNum: number) => {
+  return w * colNum + formula(len, colNum) + 'px';
 }
 
 /**
@@ -51,7 +47,7 @@ export const computedWidth = (w: number, len: number, colNum: number,  ) => {
  * */
 export const getTranslateValues = (element: any): { x: number; y: number } => {
   // 获取元素的transform属性值
-  const transform = window.getComputedStyle(element).transform
+  const transform = window.getComputedStyle(element).transform;
 
   if (transform.startsWith('matrix')) {
     // 通过逗号分隔并提取最后两个数值
@@ -85,12 +81,12 @@ export const getTranslateValues = (element: any): { x: number; y: number } => {
 // 修改数组中位置改变的数据
 export const updateList = (list: Images[], changeArray: Images[], originItem: Images) => {
   const arr = list.map(item => {
-    const changeItem = changeArray.find((curr: Images) => curr.src === item.src);
+    const changeItem = changeArray.find((curr: Images) => curr.url === item.url);
     if (changeItem) {
-      item.positionNum = changeItem.positionNum;
+      item.position = changeItem.position;
     }
-    if (item.src === originItem.src) {
-      item.positionNum = originItem.positionNum;
+    if (item.url === originItem.url) {
+      item.position = originItem.position;
     }
     return item;
   })
@@ -99,5 +95,5 @@ export const updateList = (list: Images[], changeArray: Images[], originItem: Im
 
 // 交换图片位置
 export const BubblingSort = (arr: Images[]) => {
-  return arr.slice().sort((a, b) => a.positionNum - b.positionNum);
+  return arr.slice().sort((a, b) => a.position! - b.position!);
 }

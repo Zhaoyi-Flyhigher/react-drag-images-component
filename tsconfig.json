@@ -13,5 +13,11 @@
     "jsx": "react",
     "isolatedModules": true
   },
-  "include": ["build.config.ts", "src"]
+  "include": [
+    "build.config.ts", 
+    "src",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts"
+  ]
 }

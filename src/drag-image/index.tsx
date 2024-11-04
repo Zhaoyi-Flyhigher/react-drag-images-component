@@ -6,7 +6,7 @@ import React, { useEffect, useState, useCallback, useRef } from "react";
 import type { DragImageProps, Images } from "./drag";
 import { computedTop, computedLeft, computedWidth, getTranslateValues, BubblingSort, updateList } from "../utils/dragImgUtils";
 import { v4 as uuidv4 } from 'uuid';
-// import { cloneDeep } from "lodash-es";
+import { cloneDeep } from "lodash-es";
 import classNames from "classnames";
 import "./style/index.scss";
 import Down from "../assets/down.svg";
@@ -24,6 +24,7 @@ const DragImges = (props: DragImageProps) => {
     row = 1,
     isOpen = true,
     isDrag = true,
+    children = null
   } = props;
 
   // 格式化后的图片数据
@@ -37,7 +38,9 @@ const DragImges = (props: DragImageProps) => {
    // 过渡动画的定时器
    const timerRef = useRef<any>(null);
    // 移动的元素
-  const moveContainerRef = useRef<any>({})
+  const moveContainerRef = useRef<any>({});
+  // 创建一个 ref 数组来存储每个子元素的 ref
+  // const childRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
 
   // 初始化参数
   useEffect(() => {
@@ -50,30 +53,27 @@ const DragImges = (props: DragImageProps) => {
         }
       }))
     } 
-  }, data)
+  }, [data])
+
+  // 初始化 ref 数组
+  // useEffect(() => {
+  //   moveContainerRef.current = [];
+  //   moveContainerRef.current = moveContainerRef.current.slice(0, React.Children.count(children));
+  // }, [children]);
 
   // 计算图片的位置
   const computedImgPosition = (list: Images[]) => {
     list.forEach((item: Images) => {
       const target: any = document.querySelector(`#img-${item.id}`)
-      // 初始化的时候触发一次
-      // if (initData) {
-        const top = computedTop(item.position!, col, height) + 'px';
-        const left = computedLeft(item.position!, col, width) + 'px';
-        target.style.transform = `translate(${left}, ${top})`;
-      // }
-      // 如果不是默认的盒子，且width 不等于 初始设置的宽度，重置宽度
-      // const initWidth = target.style.width.replace('px', '')
-      // if (initWidth !== width.toString()) {
-      //   target.style.width = width + 'px'
-      //   target.style.height = height + 'px'
-      // }
+      const top = computedTop(item.position!, col, height) + 'px';
+      const left = computedLeft(item.position!, col, width) + 'px';
+      target.style.transform = `translate(${left}, ${top})`;
     })
   }
 
   // 计算图片所在的位置
   useEffect(() => {
-    if (list.length) computedImgPosition(list);
+    if (list.length && !children) computedImgPosition(list);
   }, [list])
 
   /**
@@ -82,17 +82,17 @@ const DragImges = (props: DragImageProps) => {
    * */
   const formulaConHeight = useCallback(
     (flag: boolean) => {
-      const rows = Math.ceil(list.length / col)
       if (!flag) {
-        return row * height;
+        return row * height + row * 10;
       } else {
+        const rows = Math.ceil(list.length / col);
         return rows * height + rows * 10;
       }
     },
     [list, open])
 
   // 1.开始拖拽
-  const handleDragStart = (event: React.MouseEvent<HTMLSpanElement, MouseEvent>, item: Images) => {
+  const handleDragStart = (event: React.MouseEvent<any, MouseEvent>, item: Images) => {
     if(timerRef.current) return false;
     // 复制数据
     let copyList = list.slice();
@@ -103,7 +103,7 @@ const DragImges = (props: DragImageProps) => {
     // 获取图片地址
     const url = item.url;
     // 选中的图片的dom和数据
-    const selectDom = moveContainerRef.current[url];
+    const selectDom = moveContainerRef.current[url].current ?? moveContainerRef.current[url];
     const selectMenuData = item;
 
     // 获取父级容器滚动条位置
@@ -205,8 +205,6 @@ const DragImges = (props: DragImageProps) => {
       }
       // 计算新的位置编号
       const newPosition = newWidthNum + newHeightNum * col;
-      console.log("newPosition", newPosition);
-      console.log("selectMenuData", selectMenuData.position);
       // 如果新的位置与当前位置编号不相等，则进行位置交换
       if (newPosition !== selectMenuData.position) {
         let newItem = copyList.find((item: Images) => {
@@ -279,6 +277,8 @@ const DragImges = (props: DragImageProps) => {
         // 更新copyList列表数据，重新排序
         copyList = BubblingSort(updateList(copyList, changeArray, originItem));
       }
+      console.log("change copy list:", copyList);
+      
     }
 
     // 鼠标抬起
@@ -300,11 +300,24 @@ const DragImges = (props: DragImageProps) => {
          * 用0.3秒来过渡
          * mousedownTimer在一开始对点击事件进行了判断，若还在过渡则不能进行下一次点击
          * */
-        const zyTransMoveBox: any = document.querySelector('.zy_drag-trans-move-box')
-        zyTransMoveBox.classList.remove('zy_drag-transition')
-        zyTransMoveBox.classList.remove('zy_drag-trans-move-box')
-        clearTimeout(timerRef.current)
-        timerRef.current = null
+        const zyTransMoveBox: any = document.querySelector('.zy_drag-trans-move-box');
+        zyTransMoveBox?.classList.remove('zy_drag-transition');
+        zyTransMoveBox?.classList.remove('zy_drag-trans-move-box');
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+
+        if (props.onChange) {
+          // 通知外面更新data
+          const arr = cloneDeep(copyList)
+          props.onChange(
+            arr.map(item => {
+              delete item.position
+              return item
+            }),
+          )
+        } else {
+          setList(copyList)
+        }
       }, 300)
 
       // 移除监听事件
@@ -312,18 +325,6 @@ const DragImges = (props: DragImageProps) => {
       previewRef.current.removeEventListener('mouseup', mouseUpListener)
       containerRef.current.removeEventListener('scroll', mouseScroll)
 
-      // if (props.onDragChange) {
-      //   // 通知外面更新data
-      //   const arr = cloneDeep(copyList)
-      //   props.onDragChange(
-      //     arr.map(item => {
-      //       delete item.position
-      //       return item
-      //     }),
-      //   )
-      // } else {
-        setList(copyList)
-      // }
     }
     // 父级元素滚动事件
     function mouseScroll(event: any) {
@@ -332,6 +333,46 @@ const DragImges = (props: DragImageProps) => {
       moveBox.style.transform = `translate(${moveLeft}px, ${moveTop + scrollTop - originTop}px)`;
     }
   }
+
+  // 渲染子元素并为每个子元素增加 ref 和 className
+  const renderedChildren = React.Children.map(children, (child, index) => {
+    if (React.isValidElement(child)) {
+      const mappingData = data.find(item => item.id === child.key) as Images;
+      mappingData['position'] = index + 1;
+      const ref = moveContainerRef.current[mappingData.url] || React.createRef<HTMLDivElement>();
+      moveContainerRef.current[mappingData.url] = ref;
+      console.log(child);
+      
+      // 获取子元素现有的 className
+      const existingClassName = child.props.className || '';
+      // const existingId = child.props.id || '';
+
+      // 合并现有的 className 和新的 className
+      const newClassName = `${existingClassName} zy_drag-container-main-sub-item`;
+      const newId = `img-${child.key}`;
+
+      // 初始化位置
+      const top = computedTop(mappingData['position'], col, height) + 'px';
+      const left = computedLeft(mappingData['position'], col, width) + 'px';
+      // 为每一项绑定拖拽事件
+      const onDragStart = (event: React.MouseEvent) => handleDragStart(event, mappingData);
+      
+      return React.cloneElement(child, {
+        ...child.props,
+        ref,
+        className: newClassName,
+        id: newId,
+        style: {
+          width,
+          height,
+          transform: `translate(${left}, ${top})`,
+        },
+        onMouseDown: onDragStart,
+      });
+    }
+
+    return child;
+  });
 
   // 渲染图片区域
   const renderImage = () => {
@@ -356,7 +397,7 @@ const DragImges = (props: DragImageProps) => {
                     title="移动"
                     onMouseDown={event => handleDragStart(event, item)}
                   >
-                    <img className="zy_drag-container-main-sub-item-drag-span-icon" src={Drag} />
+                    <img className="zy_drag-container-main-sub-item-drag-span-icon" src={Drag} draggable="false" />
                     <span className="text">拖拽排序</span>
                   </span>
                 ) : null}
@@ -373,18 +414,19 @@ const DragImges = (props: DragImageProps) => {
       className={classNames("zy_drag-container", {"zy_drag-border": isBorder})} 
       style={{
         "borderColor": borderColor,
-        "width": computedWidth(width, list.length, col)
+        width: computedWidth(width, list.length, col)
       }}
     >
       <div 
         ref={containerRef}
         className="zy_drag-container-main"
         style={{
+          width: computedWidth(width, list.length, col),
           height: `${formulaConHeight(isOpen ? open : true)}px`,
         }}
       >
         <div ref={previewRef} className="zy_drag-container-main-sub">
-          {renderImage()}
+          { children ? renderedChildren : renderImage()}
         </div>
       </div>
       {/* 底部操作区域 */}
