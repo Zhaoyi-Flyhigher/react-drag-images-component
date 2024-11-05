@@ -3,15 +3,15 @@
  * @author zhaoyi 
 **/
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import type { DragImageProps, Images } from "./drag";
-import { computedTop, computedLeft, computedWidth, getTranslateValues, BubblingSort, updateList } from "../utils/dragImgUtils";
+import type { DragImageProps, Images } from "../../types/drag";
+import { computedTop, computedLeft, computedWidth, getTranslateValues, BubblingSort, updateList } from "../../utils";
 import { v4 as uuidv4 } from 'uuid';
 import { cloneDeep } from "lodash-es";
 import classNames from "classnames";
-import "./style/index.scss";
-import Down from "../assets/down.svg";
-import Upoutlined from "../assets/upoutlined.svg";
-import Drag from "../assets/drag.svg";
+import "../../style/index.scss";
+import Down from "../../assets/down.svg";
+import Upoutlined from "../../assets/upoutlined.svg";
+import Drag from "../../assets/drag.svg";
 
 const DragImges = (props: DragImageProps) => {
   const { 

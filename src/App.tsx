@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import type { Images } from "./drag-image/drag";
-import DragImges from "./drag-image";
+import type { Images } from "./types/drag";
+import DragImges from "./component/drag-image";
 
 const App = () => {
   const [data, setData] = useState<Images[]>([

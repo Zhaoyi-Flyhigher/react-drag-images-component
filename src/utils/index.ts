@@ -1,4 +1,4 @@
-import type { Images } from "../drag-image/drag";
+import type { Images } from "../types/drag";
 /**
  * @description 计算容器top值
  * @param num 位置数
