@@ -12,6 +12,9 @@
   "main": "./dist/component/index.mjs",
   "module": "./dist/component/index.mjs",
   "types": "./dist/types/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "dev": "rsbuild dev",
     "build": "unbuild --minify",

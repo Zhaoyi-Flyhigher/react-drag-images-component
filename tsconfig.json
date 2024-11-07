@@ -7,11 +7,12 @@
     "strict": true,
     "skipLibCheck": true,
     "declaration": true,
+    "declarationDir": "dist/types",
     "sourceMap": false,
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "isolatedModules": true
+    "isolatedModules": true,
   },
   "include": [
     "build.config.ts", 
