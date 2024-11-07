@@ -1,6 +1,4 @@
 import {defineBuildConfig} from 'unbuild';
-// import typescript from '@rollup/plugin-typescript';
-// import sass from 'rollup-plugin-sass';
 
 export default defineBuildConfig({
     entries: [
@@ -35,20 +33,9 @@ export default defineBuildConfig({
             declaration: false,
         },
     ],
-    // dts: {
-    //     outDir: "dist/types"
-    // },
     rollup: {
         cjsBridge: true,
         emitCJS: true,
-        // plugins: [
-        //     typescript({
-        //         tsconfig: './tsconfig.json'
-        //     }),
-        //     sass({
-        //       output: './dist/style/index.css' //输出到指定的 CSS 文件
-        //     }),
-        // ],
     },
     clean: true,
     declaration: true,
