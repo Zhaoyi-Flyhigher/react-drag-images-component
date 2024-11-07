@@ -1,6 +1,6 @@
 {
   "name": "react-drag-images-component",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "react 图片拖拽组件",
   "type": "module",
   "exports": {
