@@ -7,18 +7,16 @@
     "strict": true,
     "skipLibCheck": true,
     "declaration": true,
-    "declarationDir": "dist/types",
     "sourceMap": false,
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "jsx": "react",
     "isolatedModules": true,
+    "baseUrl": "./",
+    "paths": {
+      "*": ["types/*", "node_modules/*"]
+    }
   },
-  "include": [
-    "build.config.ts", 
-    "src",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.d.ts"
-  ]
+  "include": [ "src"],
+  "exclude": ["node_modules"]
 }

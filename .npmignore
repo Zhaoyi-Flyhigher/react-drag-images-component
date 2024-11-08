@@ -1,7 +1,7 @@
 src/
 node_modules/
 /.ignore
-/build.config.ts
+/modern.config.ts
 /index.html
 /pnpm-lock.yaml
 /rsbuild.config.ts
