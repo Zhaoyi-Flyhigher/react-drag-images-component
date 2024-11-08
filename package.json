@@ -3,20 +3,15 @@
   "version": "0.0.11",
   "description": "react 图片拖拽组件",
   "type": "module",
-  "exports": {
-    ".": {
-      "import": "./dist/component/index.mjs",
-      "require": "./dist/component/index.mjs"
-    }
-  },
-  "main": "./dist/component/index.mjs",
-  "module": "./dist/component/index.mjs",
+  "main": "./dist/index.mini.cjs",
+  "module": "./dist/index.mini.esm.js",
   "types": "./dist/types/index.d.ts",
   "typesVersions": {
-    "*": {
-      ".": [
-        "./dist/types/index.d.ts"
-      ]
+    "module": {
+      "*": ["dist/types/*.d.ts"]
+    },
+    "commonjs": {
+      "*": ["dist/types/*.cjs.d.ts"]
     }
   },
   "files": [
@@ -24,7 +19,8 @@
   ],
   "scripts": {
     "dev": "rsbuild dev",
-    "build": "unbuild --minify",
+    "build:types": "tsc --project tsconfig.json --declaration --emitDeclarationOnly",
+    "build": "rollup -c --bundleConfigAsCjs",
     "release": "bumpp && npm publish"
   },
   "keywords": [
@@ -39,6 +35,12 @@
   "author": "zhaoyi <banbaoyan_zy@163.com>",
   "license": "MIT",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-replace": "^6.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "@rollup/plugin-url": "^8.0.2",
     "@rsbuild/core": "^1.0.19",
     "@rsbuild/plugin-react": "^1.0.6",
     "@rsbuild/plugin-sass": "^1.1.0",
@@ -48,11 +50,15 @@
     "@types/react-dom": "^18.3.1",
     "@types/uuid": "^10.0.0",
     "bumpp": "^9.8.0",
-    "typescript": "^5.6.3",
-    "unbuild": "^2.0.0"
+    "rollup": "^4.24.4",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-sass": "^1.14.0",
+    "sass": "^1.80.6",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "classnames": "^2.5.1",
+    "rollup-plugin-postcss": "^4.0.2",
     "uuid": "^11.0.2"
   },
   "peerDependencies": {

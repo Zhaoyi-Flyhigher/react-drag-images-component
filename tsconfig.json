@@ -15,7 +15,6 @@
     "isolatedModules": true,
   },
   "include": [
-    "build.config.ts", 
     "src",
     "src/**/*.ts",
     "src/**/*.tsx",

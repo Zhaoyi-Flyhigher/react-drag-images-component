@@ -3,7 +3,7 @@
  * @author zhaoyi 
 **/
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import type { DragImageProps, Images } from "../../types/drag";
+import type { DragImageProps, Images } from "../../types";
 import { computedTop, computedLeft, computedWidth, getTranslateValues, BubblingSort, updateList } from "../../utils";
 import { v4 as uuidv4 } from 'uuid';
 import { cloneDeep } from "lodash-es";
