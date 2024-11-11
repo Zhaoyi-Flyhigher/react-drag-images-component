@@ -27,7 +27,7 @@ export interface DragImageProps {
   /** 是否展示拖拽按钮 **/ 
   isDrag?: boolean
   /** 图片拖拽change事件 **/ 
-  onChange: (data: Images[]) => void
+  onChange?: (data: Images[]) => void
   /** ReactNode **/
   children?: React.ReactNode | null | undefined;
 }
