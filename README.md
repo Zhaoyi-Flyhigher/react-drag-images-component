@@ -28,7 +28,7 @@ npm i -D react-drag-images-component
 ## 通过数据渲染
 
 ```javascript
-import DragImages from "react-drag-images-component";
+import { DragImages } from "react-drag-images-component";
 
 const App = () => {
   const handleChange = (data) => {
@@ -44,7 +44,7 @@ const App = () => {
 **请确保 key 与 id 保持一致且不重复**
 
 ```javascript
-import DragImages from "react-drag-images-component";
+import { DragImages } from "react-drag-images-component";
 
 const App = () => {
   const [data, setData] = useState([]);
