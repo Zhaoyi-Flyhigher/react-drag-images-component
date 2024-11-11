@@ -33,6 +33,9 @@ importers:
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
+      '@types/node':
+        specifier: ^22.9.0
+        version: 22.9.0
       '@types/react':
         specifier: ^18.3.3
         version: 18.3.12
@@ -801,6 +804,9 @@ packages:
 
   '@types/node@12.20.55':
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
+
+  '@types/node@22.9.0':
+    resolution: {integrity: sha512-vuyHg81vvWA1Z1ELfvLko2c8f34gyA0zaic0+Rllc5lbCnbSyuvb2Oxpm6TAUAC/2xZN3QGqxBNggD1nNR2AfQ==}
 
   '@types/prop-types@15.7.13':
     resolution: {integrity: sha512-hCZTSvwbzWGvhqxp/RqVqwU999pBf2vp7hzIjiYOsl8wqOmUxkQ6ddw1cV3l8811+kdUFus/q4d1Y3E3SyEifA==}
@@ -1788,6 +1794,9 @@ packages:
   ufo@1.5.4:
     resolution: {integrity: sha512-UsUk3byDzKd04EyoZ7U4DOlxQaD14JUKQl6/P7wiX4FNvUfm3XL246n9W5AmqwW5RSFJ27NAuM0iLscAOYUiGQ==}
 
+  undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
+
   universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}
     engines: {node: '>= 4.0.0'}
@@ -2560,6 +2569,10 @@ snapshots:
   '@types/lodash@4.17.13': {}
 
   '@types/node@12.20.55': {}
+
+  '@types/node@22.9.0':
+    dependencies:
+      undici-types: 6.19.8
 
   '@types/prop-types@15.7.13': {}
 
@@ -3490,6 +3503,8 @@ snapshots:
   typescript@5.6.3: {}
 
   ufo@1.5.4: {}
+
+  undici-types@6.19.8: {}
 
   universalify@0.1.2: {}
 
