@@ -18,7 +18,7 @@
   },
   "simple-git-hooks": {
     "pre-commit": "npx nano-staged",
-    "commit-msg": "node ./src/scripts/verify-commit.js"
+    "commit-msg": "node scripts/verify-commit.js"
   },
   "nano-staged": {
     "*.{css,less}": "prettier --write",
